@@ -1,2 +1,2 @@
 # Halo-Adventures
-Just a simple game on termil based on Halo ambience
+Just a simple game in C based on Halo ambience
