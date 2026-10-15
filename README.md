@@ -1,74 +1,72 @@
-🚀 Halo Adventure
+# 🚀 Halo Adventure
 
-    Progetto accademico per l'esame di Programmazione Procedurale e Laboratorio
+<p align="center">
+  <img src="https://img.shields.io/badge/Language-C11-blue.svg" alt="C11">
+  <img src="https://img.shields.io/badge/University-UniPG-red.svg" alt="UniPG">
+  <img src="https://img.shields.io/badge/Course-Programmazione%20Procedurale-green.svg" alt="Course">
+</p>
 
-    Università degli Studi di Perugia (UniPG)
+> **Progetto Accademico per l'esame di *Programmazione Procedurale e Laboratorio***  
+> **Università degli Studi di Perugia (UniPG)**  
+> **Docente:** Prof. Simone Santini  
+> **Autore:** Erald Bektashi  
 
-    Docente: Prof. Simone Santini
+---
 
-    Autore: Erald Bektashi
+## 📖 Presentazione del Progetto
 
-📖 Presentazione del Progetto
+**Halo Adventure** è un gioco di ruolo e avventura testuale a turni sviluppato in linguaggio **C**. 
 
-Halo Adventure è un gioco di ruolo/avventura testuale a turni sviluppato in linguaggio C.
+Il progetto applica in modo concreto e approfondito i concetti fondamentali della programmazione procedurale:
+- **Strutture dati dinamiche** (liste doppiamente collegate e grafi/connessioni bidirezionali).
+- **Gestione avanzata della memoria** tramite allocazione/deallocazione dinamica (`malloc`, `free`, prevenzione dei memory leak).
+- **Modularizzazione del codice** e gestione pulita di header e librerie custom.
 
-Nasce come progetto d'esame per il corso di Programmazione Procedurale e Laboratorio presso l'Università degli Studi di Perugia (UniPG). L'obiettivo del progetto è applicare in modo concreto e completo i concetti fondamentali del C procedurale: strutture dati dinamiche, gestione avanzata della memoria tramite allocazione e deallocazione manuale (pointer & dynamic memory allocation), e modularizzazione del codice.
-🎮 Meccaniche e Regole di Gioco
+---
 
-Il gioco permette da 1 a 4 giocatori di esplorare e combattere attraverso una mappa composta da due mondi paralleli e speculari:
+## 🎮 Meccaniche e Regole di Gioco
 
-    Zeta Halo (Mondo Reale): Il mondo di superficie, dove si trovano oggetti, equipaggiamenti e nemici di varia natura.
+Il gioco supporta da **1 a 4 giocatori** impegnati ad esplorare e combattere attraverso una mappa composta da **due mondi paralleli e speculari**:
 
-    Alta Opera (Soprasotto): La dimensione oscura/spaziale, più ostile, dove risiede l'Arbiter (il boss finale).
+| Mondo | Tipo | Descrizione |
+| :--- | :--- | :--- |
+| **Zeta Halo** | *Mondo Reale* | La superficie dell'anello: contiene oggetti, armi, medikit e nemici Covenant standard. |
+| **Alta Opera** | *Soprasotto* | Dimensione oscura e ostile: ospita nemici più temibili e il boss finale (**Arbiter**). |
 
-🏆 Obiettivo
+### 🏆 Obiettivo
+I giocatori devono sopravvivere, raccogliere equipaggiamenti, potenziarsi e viaggiare tra i due mondi per **trovare e sconfiggere l'Arbiter**. Eliminato l'Arbiter, la galassia è salva e la partita termina con la vittoria dei giocatori superstiti.
 
-I giocatori devono sopravvivere, raccogliere equipaggiamenti, potenziarsi e viaggiare tra i due mondi con lo scopo di trovare e sconfiggere l'Arbiter. Eliminato l'Arbiter, la galassia è salva e la partita termina con la vittoria dei giocatori rimasti in vita.
-🕹️ Struttura del Turno
+### 🕹️ Struttura del Turno
+In ogni turno l'ordine delle mosse viene rimescolato casualmente. Nel proprio turno, il giocatore può:
+- 🏃 **Spostarsi**: Avanzare o indietreggiare (se la zona attuale non è bloccata da nemici).
+- 🌀 **Cambiare Mondo**: Attraversare un portale tra Zeta Halo ed Alta Opera (il ritorno richiede un test sulla *Fortuna*).
+- ⚔️ **Combattere**: Iniziare uno scontro contro il nemico di zona. Il danno si basa su *Attacco*, *Difesa*, il lancio di un dado (1-20) e la *Fortuna*.
+- 🎒 **Gestire l'Inventario**: Raccogliere ed usare fino a 3 oggetti (*Stimolanti, Medikit, Fucili MA5B, Spada Energetica, Scudi Energetici, Corazza Mjolnir, Teschio Heretic, Manufatti Precursore*).
 
-A ogni turno, l'ordine dei giocatori viene casualmente rimescolato per dinamicità. Nel proprio turno, un giocatore può effettuare diverse azioni:
+---
 
-    Movimento: Avanzare o indietreggiare lungo la mappa (se non ci sono nemici attivi nello stesso blocco).
+## ⚙️ Architettura del Codice
 
-    Cambio Mondo: Aprire un portale per passare da Zeta Halo ad Alta Opera (o tentare di ritornare a Zeta Halo superando un test sulla Fortuna).
+Il progetto segue una struttura modulare suddivisa in tre file principali:
 
-    Combattimento: Ingaggiare il nemico presente nella zona corrente. Il danno inflitto e subito si basa sui punti di Attacco, Difesa e su un lancio casuale di dado (1-20), modulato dalla Fortuna.
+```text
+├── main.c        # Entry point: gestione menu, ciclo principale e RNG
+├── gamelib.h     # Definizione di enum, struct e prototipi di funzione
+└── gamelib.c     # Logica di gioco, gestione memoria, mappa e combattimenti
 
-    Gestione Oggetti: Raccogliere ed equipaggiare/usare oggetti dallo zaino (fino a 3 slot) per curarsi o aumentare le proprie statistiche (Stimolanti, Medikit, Fucili MA5B, Spada Energetica, Scudi Energetici, Corazza Mjolnir, Teschio Heretic, Manufatti Precursore).
+Punti Chiave dell'Implementazione
 
-⚙️ Architettura Tecnica e Strutture Dati
+    Liste Doppiamente Collegate: Ciascuna zona possiede puntatori avanti e indietro.
 
-Il codice è stato suddiviso secondo le buone norme di modularizzazione in tre file distinti:
+    Collegamento Tra Mondi: Ogni nodo in Zeta Halo ha un puntatore diretto (link_AltaOpera) al rispettivo nodo in Alta Opera e viceversa.
 
-    main.c: Gestisce il menu principale, il ciclo di esecuzione del programma e l'inizializzazione del generatore casuale.
-
-    gamelib.h: Contiene le definizioni di tipi enumerativi (enum), strutture dati (struct) e prototipi di funzione.
-
-    gamelib.c: Implementa la logica completa del gioco, la gestione del setup, la mappa e i combattimenti.
-
-Punti chiave dell'implementazione:
-
-    Liste Doppiamente Collegate e Speculari:
-
-        Ciascuna zona della mappa è un nodo di una lista doppiamente collegata (avanti e indietro).
-
-        Ogni nodo di Zeta Halo possiede un puntatore bidirezionale (link_AltaOpera / link_ZetaHalo) diretto al corrispettivo nodo in Alta Opera.
-
-    Gestione Dinamica della Memoria:
-
-        La mappa e i giocatori vengono allocati nello heap tramite malloc().
-
-        Viene garantita la deallocazione completa della memoria tramite free() (funzioni dealloca_mappa() e dealloca_giocatori()) per evitare memory leak quando si reinizializza la partita o si esce dal programma.
-
-    Controllo ed Editing della Mappa:
-
-        Durante il setup, è possibile generare una mappa casuale oppure inserire/rimuovere nodi manualmente.
-
-        Prima di iniziare la partita, la funzione chiudi_mappa_func() convalida i vincoli del sistema (minimo 15 zone e presenza di un solo Arbiter).
+    Validazione Mappa: La funzione chiudi_mappa_func() verifica che ci siano almeno 15 zone ed un solo Arbiter prima di consentire l'avvio della partita.
 
 🛠️ Compilazione ed Esecuzione
+Requisiti
 
-Per compilare ed eseguire il progetto su un terminale Linux / MacOS o Windows (tramite GCC / MinGW):
+    Compilatore C compatibile con lo standard C99 / C11 (es. gcc, clang).
+
 1. Compilazione
 Bash
 
@@ -79,17 +77,11 @@ Bash
 
 ./halo_adventure
 
-📋 Requisiti del Sistema
-
-    Compilatore C compatibile con lo standard C99 / C11 (es. gcc, clang).
-
-    Terminale con supporto ai comandi clear (Linux/MacOS) o cls (Windows).
-
 👨‍💻 Crediti
 
     Autore: Erald Bektashi
 
-    Corso di Laurea: Ingegneria - Università degli Studi di Perugia (UniPG)
+    Ateneo: Università degli Studi di Perugia (UniPG)
 
     Materia: Programmazione Procedurale e Laboratorio
 
